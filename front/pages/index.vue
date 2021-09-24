@@ -8,7 +8,7 @@
     <div :style="{ background: '#fff', padding: '24px', minHeight: '280px' }">
       <a-row type="flex" justify="center" align="top">
         <a-col :xs="24" :sm="24" :md="24" :lg="12">
-          <p>ツイートののURLを入力すると動画が保存できます</p>
+          <p>ツイートのURLを入力すると動画が保存できます</p>
           <a-input v-model="inputUrl" allow-clear placeholder="twitter の url 例: https://twitter.com/hybridcIena/status/1441113107598770178" :disabled="loading" size="large">
             <a-icon slot="prefix" type="twitter" />
           </a-input>

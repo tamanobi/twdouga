@@ -4,11 +4,14 @@
     <a-menu
       theme="dark"
       mode="horizontal"
-      :default-selected-keys="['1']"
+      :default-selected-keys="[$route.path]"
       :style="{ lineHeight: '64px' }"
     >
-      <a-menu-item key="1">
-        動画保存
+      <a-menu-item key="/">
+        <NuxtLink to="/">動画保存</NuxtLink>
+      </a-menu-item>
+      <a-menu-item key="/list">
+        <NuxtLink to="/list">注目動画</NuxtLink>
       </a-menu-item>
     </a-menu>
   </a-layout-header>
