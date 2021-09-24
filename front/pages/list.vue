@@ -33,7 +33,7 @@ import axios from 'axios';
 export default {
   async asyncData ({ params }) {
     const endpoint = process.env.ENDPOINT;
-    const url = `${endpoint}/list`;
+    const url = `${endpoint}list`;
     const response = await axios.get(url);
 
     return {list: response.data}
