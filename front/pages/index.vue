@@ -1,56 +1,38 @@
 <template>
-  <a-layout id="components-layout-demo-top" class="layout">
-    <a-layout-header>
-      <div class="logo">twdouga</div>
-      <a-menu
-        theme="dark"
-        mode="horizontal"
-        :default-selected-keys="['1']"
-        :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">
-          動画保存
-        </a-menu-item>
-      </a-menu>
-    </a-layout-header>
-    <a-layout-content style="padding: 0 50px">
-      <a-breadcrumb style="margin: 16px 0">
-        <!-- <a-breadcrumb-item>Home</a-breadcrumb-item>
-        <a-breadcrumb-item>List</a-breadcrumb-item>
-        <a-breadcrumb-item>App</a-breadcrumb-item> -->
-      </a-breadcrumb>
-      <div :style="{ background: '#fff', padding: '24px', minHeight: '280px' }">
-        <a-row type="flex" justify="center" align="top">
-          <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-input v-model="inputUrl" allow-clear placeholder="twitter の url 例: https://twitter.com/hybridcIena/status/1441113107598770178" :disabled="loading" size="large">
-              <a-icon slot="prefix" type="twitter" />
-            </a-input>
-            <br />
-            <br />
-            <a-button type="primary" size="large" :loading="loading" @click="getVideo">動画のURLを手に入れる</a-button>
-            <br />
-            <br />
-            <a-spin :spinning="loading">
-              <div class="spin-content">
-                <div v-if="videoUrl">
-                  <video controls style="max-width: 100%;">
-                    <source :src="videoUrl" type="video/mp4"/>
-                  </video>
-                  <p><a :href="videoUrl">{{ videoUrl }}</a></p>
-                </div>
-                <div v-else>ここに動画が表示されます</div>
+  <div>
+    <a-breadcrumb style="margin: 16px 0">
+      <!-- <a-breadcrumb-item>Home</a-breadcrumb-item>
+      <a-breadcrumb-item>List</a-breadcrumb-item>
+      <a-breadcrumb-item>App</a-breadcrumb-item> -->
+    </a-breadcrumb>
+    <div :style="{ background: '#fff', padding: '24px', minHeight: '280px' }">
+      <a-row type="flex" justify="center" align="top">
+        <a-col :xs="24" :sm="24" :md="24" :lg="12">
+          <p>ツイートののURLを入力すると動画が保存できます</p>
+          <a-input v-model="inputUrl" allow-clear placeholder="twitter の url 例: https://twitter.com/hybridcIena/status/1441113107598770178" :disabled="loading" size="large">
+            <a-icon slot="prefix" type="twitter" />
+          </a-input>
+          <br />
+          <br />
+          <a-button type="primary" size="large" :loading="loading" @click="getVideo">動画のURLを手に入れる</a-button>
+          <br />
+          <br />
+          <a-spin :spinning="loading">
+            <div class="spin-content">
+              <div v-if="videoUrl">
+                <video controls style="max-width: 100%;">
+                  <source :src="videoUrl" type="video/mp4"/>
+                </video>
+                <p><a :href="videoUrl">{{ videoUrl }}</a></p>
               </div>
-            </a-spin>
-          </a-col>
-        </a-row>
-      </div>
-    </a-layout-content>
-    <a-layout-footer style="text-align: center">
-      twdouga ©2021
-    </a-layout-footer>
-  </a-layout>
+              <div v-else>ここに動画が表示されます</div>
+            </div>
+          </a-spin>
+        </a-col>
+      </a-row>
+    </div>
+  </div>
 </template>
-
 <script>
 export default {
   data() {
