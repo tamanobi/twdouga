@@ -28,11 +28,11 @@
         </a-input>
         <br />
         <br />
-        <a-button type="primary" size="large" :disabled="loading" @click="test">動画のURLを手に入れる</a-button>
+        <a-button type="primary" size="large" :loading="loading" @click="getVideo">動画のURLを手に入れる</a-button>
         <br />
         <br />
         <div v-if="videoUrl">
-          <video controls>
+          <video controls style="max-width: 100%;">
             <source :src="videoUrl" type="video/mp4"/>
           </video>
           <p>
@@ -57,13 +57,14 @@ export default {
     };
   },
   methods: {
-    async test() {
+    async getVideo() {
       this.loading = true;
       const endpoint = process.env.ENDPOINT;
       const url = `${endpoint}?url=${encodeURIComponent(this.inputUrl)}`;
 			const response = await this.$axios.$get(url);
       this.loading = false;
       this.videoUrl = response.url;
+      this.inputUrl = "";
     },
   },
 };
