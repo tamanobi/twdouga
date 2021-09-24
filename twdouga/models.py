@@ -17,6 +17,9 @@ class Request(Base):
 
     __table_args__ = (Index('created_at__status', "created_at", "status"), )
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 # class TwitterStatus(Base):
 #     """Twitter Status"""
 

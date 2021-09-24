@@ -54,6 +54,7 @@ class Twitter:
         status = self._url_to_status_id(url)
         if not status:
             return None
+
         tweet = self._get('statuses/show.json', {'id': status})
         variants = tweet.get("extended_entities", {}).get("media", [{}])[0].get("video_info", {}).get("variants", [])
         mp4s = [v for v in variants if v.get("bitrate") and v.get("content_type") == "video/mp4"]
@@ -69,8 +70,18 @@ class Twitter:
         return ret
 
 
-
 @app.get("/")
 async def root(url: str):
     tw = Twitter()
     return tw.get_video_url(url)
+
+
+@app.get("/list")
+async def list():
+    from twdouga.db import engine
+    from twdouga.models import Request
+    from sqlalchemy.orm import sessionmaker
+    from sqlalchemy import desc
+
+    session = sessionmaker(bind=engine)()
+    return [x.as_dict() for x in session.query(Request).order_by(desc(Request.created_at)).limit(10)]
