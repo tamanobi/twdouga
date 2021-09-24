@@ -30,7 +30,7 @@ class Twitter:
     def _post(self, api: str, params: dict = {}):
         return requests.post(self._API_BASE + api, params=params, headers=self.headers).json()
 
-    def _get(self, api: str, params: dict = {}):
+    def _get(self, api: str, params: dict = {}) -> dict:
         return requests.get(self._API_BASE + api, params=params, headers=self.headers).json()
 
     def get_guest_token(self) -> str:
@@ -44,19 +44,30 @@ class Twitter:
             return m[1]
         return None
 
-    def get_tweet(self, url: str) -> dict:
-        if id_ := self._url_to_status_id(url):
-            return self._get('statuses/show.json', {'id': id_})
-
-        return {}
-    
     def get_video_url(self, url) -> Optional[dict]:
-        variants = self.get_tweet(url).get("extended_entities", {}).get("media", [{}])[0].get("video_info", {}).get("variants", [])
+        """usecase"""
+
+        from twdouga.db import engine
+        from twdouga.models import Request
+        from sqlalchemy.orm import sessionmaker
+
+        status = self._url_to_status_id(url)
+        if not status:
+            return None
+
+        tweet = self._get('statuses/show.json', {'id': status})
+        variants = tweet.get("extended_entities", {}).get("media", [{}])[0].get("video_info", {}).get("variants", [])
         mp4s = [v for v in variants if v.get("bitrate") and v.get("content_type") == "video/mp4"]
-        if mp4s:
-            return sorted(mp4s, key=lambda x: -x.get("bitrate"))[0]
-        
-        return None
+        if not mp4s:
+            return None
+
+        ret = sorted(mp4s, key=lambda x: -x.get("bitrate"))[0]
+        session = sessionmaker(bind=engine)()
+        r = Request(status=status, video_url=ret["url"])
+        session.add(r)
+        session.commit()
+
+        return ret
 
 
 
