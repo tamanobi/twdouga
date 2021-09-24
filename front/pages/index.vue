@@ -38,9 +38,6 @@
           <p>
             <a :href="videoUrl">{{ videoUrl }}</a>
           </p>
-          <p>
-            <a :href="videoUrl" download>ダウンロード</a>
-          </p>
         </div>
       </div>
     </a-layout-content>
