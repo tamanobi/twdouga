@@ -62,7 +62,7 @@ export default {
   methods: {
     async test() {
       this.loading = true;
-      const endpoint = "https://safe-sands-65135.herokuapp.com/";
+      const endpoint = process.env.ENDPOINT;
       const url = `${endpoint}?url=${encodeURIComponent(this.inputUrl)}`;
 			const response = await this.$axios.$get(url);
       this.loading = false;
