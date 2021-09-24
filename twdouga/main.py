@@ -54,7 +54,6 @@ class Twitter:
         status = self._url_to_status_id(url)
         if not status:
             return None
-
         tweet = self._get('statuses/show.json', {'id': status})
         variants = tweet.get("extended_entities", {}).get("media", [{}])[0].get("video_info", {}).get("variants", [])
         mp4s = [v for v in variants if v.get("bitrate") and v.get("content_type") == "video/mp4"]
