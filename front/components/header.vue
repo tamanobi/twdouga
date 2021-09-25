@@ -10,8 +10,8 @@
       <a-menu-item key="/">
         <NuxtLink to="/">動画保存</NuxtLink>
       </a-menu-item>
-      <a-menu-item key="/list">
-        <NuxtLink to="/list">注目動画</NuxtLink>
+      <a-menu-item key="/list/">
+        <NuxtLink to="/list/">注目動画</NuxtLink>
       </a-menu-item>
     </a-menu>
   </a-layout-header>
