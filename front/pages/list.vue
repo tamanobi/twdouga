@@ -28,15 +28,12 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-
 export default {
-  async asyncData ({ params }) {
-    const endpoint = process.env.ENDPOINT;
-    const url = `${endpoint}list`;
-    const response = await axios.get(url);
+  async asyncData ({ app, params }) {
+    console.log(app);
+    const data = await app.$service.listService.get();
 
-    return {list: response.data}
+    return {list: data}
   },
   computed: {
     requests() {
