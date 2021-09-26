@@ -8,7 +8,7 @@
     <div :style="{ background: '#fff', padding: '24px', minHeight: '280px' }">
       <a-row type="flex" justify="center" align="top" :gutter="16">
         <a-col v-for="req in requests" :key="req.id" :xs="8" :sm="8" :md="8" :lg="8">
-          <a-card hoverable style="width: 240px;">
+          <a-card hoverable style="width: 400px;">
             <video controls style="max-width: 100%;">
               <source :src="req.video_url" type="video/mp4">
             </video>
