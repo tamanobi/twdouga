@@ -6,24 +6,14 @@
       <a-breadcrumb-item>App</a-breadcrumb-item> -->
     </a-breadcrumb>
     <div :style="{ background: '#fff', padding: '24px', minHeight: '280px' }">
-      <a-row type="flex" justify="center" align="top" :gutter="16">
-        <a-col v-for="req in requests" :key="req.id" :xs="8" :sm="8" :md="8" :lg="8">
-          <a-card hoverable style="width: 400px;">
-            <video controls style="max-width: 100%;">
-              <source :src="req.video_url" type="video/mp4">
-            </video>
-            <template slot="actions" class="ant-card-actions">
-              <a :href="`https://twitter.com/_/status/${req.status}`">
-                <a-icon key="twitter" type="twitter" />
-              </a>
-              <a :href="req.video_url">
-                <a-icon type="video-camera" />
-              </a>
-              <a-icon key="ellipsis" type="ellipsis" />
-            </template>
-          </a-card>
-        </a-col>
-      </a-row>
+      <div class="container">
+        <figure v-for="req in requests" :key="req.id">
+          <video controls>
+            <source :src="req.video_url" type="video/mp4">
+          </video>
+          <figcaption><a :href="req.video_url"><a-icon type="zoom-in" /></a></figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </template>
@@ -57,5 +47,29 @@ export default {
   border: 1px solid #91d5ff;
   background-color: #e6f7ff;
   padding: 30px;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.container > figure {
+  position: relative;
+  flex-grow:1;
+  display: flex;
+  flex-direction: column;
+  margin: 2px;
+}
+.container > figure > video {
+  height: 250px;
+  object-fit: cover;
+  max-width: 100%;
+  min-width: 100%;
+}
+.container > figure > figcaption {
+  position: absolute;
+  right: 5px;
+  top: 1px;
+  z-index: 1;
+  font-size: 24px;
 }
 </style>
