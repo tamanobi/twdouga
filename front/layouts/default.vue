@@ -1,7 +1,7 @@
 <template>
   <a-layout id="components-layout-demo-top" class="layout">
 		<Header />
-    <a-layout-content style="padding: 0 50px">
+    <a-layout-content style="padding: 0">
       <nuxt />
     </a-layout-content>
 		<Footer />

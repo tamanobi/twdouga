@@ -5,22 +5,19 @@
       <a-breadcrumb-item>List</a-breadcrumb-item>
       <a-breadcrumb-item>App</a-breadcrumb-item> -->
     </a-breadcrumb>
-    <div :style="{ background: '#fff', padding: '24px', minHeight: '280px' }">
-      <div class="container">
-        <figure v-for="req in requests" :key="req.id">
-          <video controls>
-            <source :src="req.video_url" type="video/mp4">
-          </video>
-          <figcaption><a :href="req.video_url"><a-icon type="zoom-in" /></a></figcaption>
-        </figure>
-      </div>
+    <div class="container">
+      <figure v-for="req in requests" :key="req.id">
+        <video controls>
+          <source :src="req.video_url" type="video/mp4">
+        </video>
+        <figcaption><a :href="req.video_url"><a-icon type="zoom-in" /></a></figcaption>
+      </figure>
     </div>
   </div>
 </template>
 <script>
 export default {
   async asyncData ({ app, params }) {
-    console.log(app);
     const data = await app.$service.listService.get();
 
     return {list: data}
@@ -51,6 +48,9 @@ export default {
 .container {
   display: flex;
   flex-wrap: wrap;
+  background: #fff;
+  padding: 0;
+  min-height: 280px;
 }
 .container > figure {
   position: relative;
