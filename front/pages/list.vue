@@ -12,22 +12,52 @@
         </video>
         <figcaption><a :href="req.video_url"><a-icon type="zoom-in" /></a></figcaption>
       </figure>
+      <infinite-loading
+        ref="infiniteLoading"
+        spinner="spiral"
+        @infinite="infiniteHandler">
+        <div slot="no-results"/>
+      </infinite-loading>
     </div>
   </div>
 </template>
 <script>
+function createFetchFunc(app) {
+  return async (offset, limit) => {
+    return await app.$service.listService.get(offset, limit);
+  };
+}
 export default {
-  async asyncData ({ app, params }) {
-    const data = await app.$service.listService.get();
+  async asyncData ({ app, params: {offset, limit} }) {
+    offset = offset || 0;
+    limit = limit || 100;
 
-    return {list: data}
+    const zfetch = createFetchFunc(app);
+    return {
+      zfetch,
+      'list': (await zfetch(offset, limit)),
+      load_completed: false
+    }
   },
   computed: {
     requests() {
       return this.list
+    },
+    fetchFunc() {
+      return this.zfetch
     }
   },
-  methods: {}
+  methods: {
+    async infiniteHandler() {
+      const res = await this.zfetch(this.list.length, this.list.length + 100);
+      if (res.length === 0) {
+        this.$refs.infiniteLoading.stateChanger.complete()
+      } else {
+        this.list = Array.prototype.concat(this.list, res);
+        this.$refs.infiniteLoading.stateChanger.loaded();
+      }
+    }
+  }
 };
 </script>
 <style>

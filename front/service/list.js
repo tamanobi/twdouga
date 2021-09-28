@@ -3,7 +3,7 @@ export class TwdougaListService {
     this.gateway = gateway;
   }
 
-  get() {
-    return this.gateway.get();
+  get(offset, limit) {
+    return this.gateway.get(offset, limit);
   }
 }

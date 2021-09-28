@@ -77,11 +77,11 @@ async def root(url: str):
 
 
 @app.get("/list")
-async def list():
+async def list(offset: int = 0, limit: int = 100):
     from twdouga.db import engine
     from twdouga.models import Request
     from sqlalchemy.orm import sessionmaker
     from sqlalchemy import desc
 
     session = sessionmaker(bind=engine)()
-    return [x.as_dict() for x in session.query(Request).order_by(desc(Request.created_at)).limit(100)]
+    return [x.as_dict() for x in session.query(Request).order_by(desc(Request.created_at)).limit(100).offset(offset)]
