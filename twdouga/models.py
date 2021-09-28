@@ -1,6 +1,6 @@
 from sqlalchemy import func
 from sqlalchemy.schema import Column, Index
-from sqlalchemy.types import Integer, String, DateTime
+from sqlalchemy.types import Integer, String, DateTime, JSON
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -13,6 +13,7 @@ class Request(Base):
     id = Column(Integer, primary_key=True)
     status = Column(String(length=32), nullable=False)
     video_url = Column(String(length=128), nullable=False)
+    response = Column(JSON, nullable=True)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
 
     __table_args__ = (Index('created_at__status', "created_at", "status"), )

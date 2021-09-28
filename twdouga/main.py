@@ -63,7 +63,7 @@ class Twitter:
 
         ret = sorted(mp4s, key=lambda x: -x.get("bitrate"))[0]
         session = sessionmaker(bind=engine)()
-        r = Request(status=status, video_url=ret["url"])
+        r = Request(status=status, video_url=ret["url"], response=tweet)
         session.add(r)
         session.commit()
 
