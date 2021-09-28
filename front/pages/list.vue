@@ -42,9 +42,6 @@ export default {
   computed: {
     requests() {
       return this.list
-    },
-    fetchFunc() {
-      return this.zfetch
     }
   },
   methods: {
