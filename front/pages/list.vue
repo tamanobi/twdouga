@@ -7,7 +7,7 @@
     </a-breadcrumb>
     <div class="container">
       <figure v-for="req in requests" :key="req.id">
-        <video controls :src="req.video_url" />
+        <video controls :src="req.video_url" :poster="req.thumbnail_url ? req.thumbnail_url : ''" />
         <figcaption><a :href="req.video_url"><a-icon type="zoom-in" /></a></figcaption>
       </figure>
       <infinite-loading
