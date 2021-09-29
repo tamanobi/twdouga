@@ -14,6 +14,7 @@ class Request(Base):
     status = Column(String(length=32), nullable=False)
     video_url = Column(String(length=128), nullable=False)
     response = Column(JSON, nullable=True)
+    thumbnail_url = Column(String(length=512))
     created_at = Column(DateTime, nullable=False, server_default=func.now())
 
     __table_args__ = (Index('created_at__status', "created_at", "status"), )

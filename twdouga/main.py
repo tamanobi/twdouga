@@ -56,14 +56,16 @@ class Twitter:
             return None
 
         tweet = self._get('statuses/show.json', {'id': status})
-        variants = tweet.get("extended_entities", {}).get("media", [{}])[0].get("video_info", {}).get("variants", [])
+        media = tweet.get("extended_entities", {}).get("media", [{}])[0]
+        thumbnail_url = media.get("media_url_https", "")
+        variants = media.get("video_info", {}).get("variants", [])
         mp4s = [v for v in variants if v.get("bitrate") and v.get("content_type") == "video/mp4"]
         if not mp4s:
             return None
 
         ret = sorted(mp4s, key=lambda x: -x.get("bitrate"))[0]
         session = sessionmaker(bind=engine)()
-        r = Request(status=status, video_url=ret["url"], response=tweet)
+        r = Request(status=status, video_url=ret["url"], response=tweet, thumbnail_url=thumbnail_url)
         session.add(r)
         session.commit()
 
