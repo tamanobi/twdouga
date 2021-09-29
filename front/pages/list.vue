@@ -14,7 +14,7 @@
         ref="infiniteLoading"
         spinner="spiral"
         @infinite="infiniteHandler">
-        <div slot="no-results"/>
+        <div slot="no-results">最後まで読み込みました</div>
       </infinite-loading>
     </div>
   </div>
