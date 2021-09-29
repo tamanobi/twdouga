@@ -86,4 +86,4 @@ async def list(offset: int = 0, limit: int = 100):
     from sqlalchemy import desc
 
     session = sessionmaker(bind=engine)()
-    return [x.as_dict() for x in session.query(Request).order_by(desc(Request.created_at)).limit(100).offset(offset)]
+    return [x.as_dict() for x in session.query(Request).order_by(desc(Request.created_at)).limit(10).offset(offset)]

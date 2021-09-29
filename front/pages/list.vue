@@ -28,7 +28,7 @@ function createFetchFunc(app) {
 export default {
   async asyncData ({ app, params: {offset, limit} }) {
     offset = offset || 0;
-    limit = limit || 100;
+    limit = limit || 10;
 
     const zfetch = createFetchFunc(app);
     return {
@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     async infiniteHandler() {
-      const res = await this.zfetch(this.list.length, this.list.length + 100);
+      const res = await this.zfetch(this.list.length, 10);
       if (res.length === 0) {
         this.$refs.infiniteLoading.stateChanger.complete()
       } else {
