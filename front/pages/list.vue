@@ -11,8 +11,8 @@
         <figcaption><a :href="req.video_url"><a-icon type="zoom-in" /></a></figcaption>
       </figure>
       <infinite-loading
-        ref="infiniteLoading"
         spinner="spiral"
+        :identifier="infiniteId"
         @infinite="infiniteHandler">
         <div slot="no-results">最後まで読み込みました</div>
       </infinite-loading>
@@ -34,7 +34,8 @@ export default {
     return {
       zfetch,
       'list': (await zfetch(offset, limit)),
-      load_completed: false
+      load_completed: true,
+      infiniteId: +new Date(),
     }
   },
   computed: {
@@ -43,15 +44,21 @@ export default {
     }
   },
   methods: {
-    async infiniteHandler() {
+    async infiniteHandler($state) {
+      if (!this.load_completed) return;
       const res = await this.zfetch(this.list.length, 10);
       if (res.length === 0) {
-        this.$refs.infiniteLoading.stateChanger.complete()
+        $state.complete();
+        console.info("completed");
       } else {
         this.list = Array.prototype.concat(this.list, res);
-        this.$refs.infiniteLoading.stateChanger.loaded();
+        this.infiniteId += 1;
+        console.log(this.list);
+        $state.loaded();
+        console.info("loaded");
       }
-    }
+      this.infiniteId += 1;
+    },
   }
 };
 </script>
