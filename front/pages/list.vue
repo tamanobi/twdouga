@@ -10,12 +10,11 @@
         <video controls :src="req.video_url" :poster="req.thumbnail_url ? req.thumbnail_url : ''" />
         <figcaption><a :href="`https://twitter.com/i/status/${req.status}`"><a-icon type="twitter-circle" theme="filled" /></a><a :href="req.video_url"><a-icon type="zoom-in" /></a></figcaption>
       </figure>
-      <infinite-loading
-        spinner="spiral"
-        :identifier="infiniteId"
-        @infinite="infiniteHandler">
-        <div slot="no-results">最後まで読み込みました</div>
-      </infinite-loading>
+
+      <div v-if="!load_completed" ref="scroll_trigger" style="display: flex;justify-content: center;width: 100%;margin: 32px 0;">
+        <a-icon type="loading" style="font-size: 64px;" />
+      </div>
+      <div v-else>最後まで読み込みました</div>
     </div>
   </div>
 </template>
@@ -26,16 +25,36 @@ function createFetchFunc(app) {
   };
 }
 export default {
+  mounted: function mounted() {
+    this.observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (entry && entry.isIntersecting) {
+        let promise = this.infiniteHandler(this.$state);
+        for (let i = 1; i <= 10; ++i) {
+          promise = promise.catch((error) => {
+            if (error) {
+              setTimeout(async () => {
+                await this.infiniteHandler(this.$state)
+              }, 5000)
+            }
+          });
+        }
+        promise.then().catch();
+      }
+    });
+
+    this.observer.observe(this.$refs.scroll_trigger);
+  },
   async asyncData ({ app, params: {offset, limit} }) {
     offset = offset || 0;
     limit = limit || 10;
 
     const zfetch = createFetchFunc(app);
     return {
+      observer: null,
       zfetch,
       'list': (await zfetch(offset, limit)),
-      load_completed: true,
-      infiniteId: +new Date(),
+      load_completed: false,
     }
   },
   computed: {
@@ -45,19 +64,14 @@ export default {
   },
   methods: {
     async infiniteHandler($state) {
-      if (!this.load_completed) return;
+      if (this.load_completed) return;
       const res = await this.zfetch(this.list.length, 10);
       if (res.length === 0) {
         $state.complete();
-        console.info("completed");
       } else {
         this.list = Array.prototype.concat(this.list, res);
-        this.infiniteId += 1;
-        console.log(this.list);
         $state.loaded();
-        console.info("loaded");
       }
-      this.infiniteId += 1;
     },
   }
 };
