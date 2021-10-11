@@ -33,7 +33,6 @@ export default {
   plugins: [
     '@/plugins/antd-ui',
     '@/plugins/service',
-    '@/plugins/gtag',
     { src: '@/plugins/infiniteloading', ssr: false }
   ],
 
@@ -50,7 +49,11 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/google-gtag',
   ],
+  'google-gtag': {
+    id: 'G-05SEHJVNDX',
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
