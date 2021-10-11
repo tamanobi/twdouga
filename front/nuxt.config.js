@@ -33,6 +33,7 @@ export default {
   plugins: [
     '@/plugins/antd-ui',
     '@/plugins/service',
+    '@/plugins/gtag',
     { src: '@/plugins/infiniteloading', ssr: false }
   ],
 
