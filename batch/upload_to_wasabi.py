@@ -40,12 +40,15 @@ def get_bucket():
     return s3.Bucket('sabamiso')
 
 
-def get_json(offset: int):
-    ENDPOINT=os.environ["ENDPOINT"]
-    assert ENDPOINT.endswith("/") and ENDPOINT.startswith("https://")
-    API = ENDPOINT + "list?offset={}&limit=10"
-    res = requests.get(API.format(offset))
-    return res.json()
+class Crawler:
+    def __init__(self, endpoint: str) -> None:
+        assert endpoint.endswith("/") and endpoint.startswith("https://")
+        self.endpoint = endpoint
+
+    def get(self, offset: int) -> dict:
+        url = self.endpoint + "list?offset={}&limit=10"
+        res = requests.get(url.format(offset))
+        return res.json()
 
 
 class VideoInfoExtractor:
@@ -77,9 +80,10 @@ class VideoInfoExtractor:
 
 if __name__ == "__main__":
     uploader = S3Uploader(get_bucket())
+    crawler = Crawler(os.environ["ENDPOINT"])
 
     for offset in range(0, 200, 10):
-        for row in get_json(offset):
+        for row in crawler.get(offset):
             vid = VideoInfoExtractor(row)
             logger.info(vid.filename)
             with io.BytesIO(vid.binary) as f:
