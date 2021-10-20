@@ -6,6 +6,13 @@ import os
 import io
 from abc import ABC, abstractmethod
 from pathlib import Path
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+logger.addHandler(ch)
 
 
 class Uploader(ABC):
@@ -71,8 +78,9 @@ class VideoInfoExtractor:
 if __name__ == "__main__":
     uploader = S3Uploader(get_bucket())
 
-    for offset in range(0, 10, 10):
+    for offset in range(0, 200, 10):
         for row in get_json(offset):
             vid = VideoInfoExtractor(row)
+            logger.info(vid.filename)
             with io.BytesIO(vid.binary) as f:
                 uploader.upload(f, vid.filename)
