@@ -5,12 +5,14 @@ import hashlib
 import os
 import io
 from abc import ABC, abstractmethod
+from pathlib import Path
 
 
 class Uploader(ABC):
     @abstractmethod
     def upload(self, body: io.BytesIO, name: str):
         pass
+
 
 class S3Uploader(Uploader):
     def __init__(self, s3_client) -> None:
@@ -22,12 +24,14 @@ class S3Uploader(Uploader):
 
 
 def get_bucket():
-    s3 = boto3.resource('s3',
+    s3 = boto3.resource(
+        's3',
         endpoint_url = 'https://s3.ap-northeast-1.wasabisys.com',
         aws_access_key_id = os.environ["WASABI_KEY"],
         aws_secret_access_key = os.environ["WASABI_SECRET"]
     )
     return s3.Bucket('sabamiso')
+
 
 def get_json(offset: int):
     ENDPOINT=os.environ["ENDPOINT"]
@@ -35,6 +39,7 @@ def get_json(offset: int):
     API = ENDPOINT + "list?offset={}&limit=10"
     res = requests.get(API.format(offset))
     return res.json()
+
 
 class VideoInfoExtractor:
     def __init__(self, obj) -> None:
@@ -54,8 +59,6 @@ class VideoInfoExtractor:
 
     @property
     def filename(self) -> str:
-        from pathlib import Path
-
         path = Path(self.url)
         suffix = path.suffix
         if suffix.find("?") != -1:
