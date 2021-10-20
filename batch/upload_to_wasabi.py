@@ -67,10 +67,12 @@ class VideoInfoExtractor:
         stem = hashlib.sha256(self.binary).hexdigest()
         return stem + suffix
 
-uploader = S3Uploader(get_bucket())
 
-for offset in range(0, 10, 10):
-    for row in get_json(offset):
-        vid = VideoInfoExtractor(row)
-        with io.BytesIO(vid.binary) as f:
-            uploader.upload(f, vid.filename)
+if __name__ == "__main__":
+    uploader = S3Uploader(get_bucket())
+
+    for offset in range(0, 10, 10):
+        for row in get_json(offset):
+            vid = VideoInfoExtractor(row)
+            with io.BytesIO(vid.binary) as f:
+                uploader.upload(f, vid.filename)
