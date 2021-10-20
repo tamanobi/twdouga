@@ -1,4 +1,3 @@
-import os
 import boto3
 import requests
 import hashlib
@@ -30,12 +29,12 @@ class S3Uploader(Uploader):
         self.client.upload_fileobj(body, path)
 
 
-def get_bucket():
+def get_bucket(key: str, secret: str):
     s3 = boto3.resource(
         's3',
         endpoint_url = 'https://s3.ap-northeast-1.wasabisys.com',
-        aws_access_key_id = os.environ["WASABI_KEY"],
-        aws_secret_access_key = os.environ["WASABI_SECRET"]
+        aws_access_key_id = key,
+        aws_secret_access_key = secret,
     )
     return s3.Bucket('sabamiso')
 
@@ -79,7 +78,7 @@ class VideoInfoExtractor:
 
 
 if __name__ == "__main__":
-    uploader = S3Uploader(get_bucket())
+    uploader = S3Uploader(get_bucket(os.environ["WASABI_KEY"], os.environ["WASABI_SECRET"]))
     crawler = Crawler(os.environ["ENDPOINT"])
 
     for offset in range(0, 200, 10):
