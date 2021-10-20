@@ -63,6 +63,8 @@ class VideoInfoExtractor:
     def binary(self) -> bytes:
         if self._binary is None:
             res = requests.get(self.url)
+            # TODO: video 以外のコンテンツが帰ってくる場合がありえる
+            # if "video" in res.headers["Content-Type"]:
             self._binary = res.content
         return self._binary
 
