@@ -35,6 +35,11 @@
 </template>
 <script>
 export default {
+  head() {
+    return {
+      title: "Twitter 動画を取得"
+    }
+  },
   data() {
     return {
       inputUrl: '',

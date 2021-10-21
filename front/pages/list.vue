@@ -25,6 +25,11 @@ function createFetchFunc(app) {
   };
 }
 export default {
+  head() {
+    return {
+      title: "Twitter の注目動画",
+    }
+  },
   mounted: function mounted() {
     this.observer = new IntersectionObserver((entries) => {
       const entry = entries[0];
