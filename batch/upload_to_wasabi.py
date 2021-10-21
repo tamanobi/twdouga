@@ -83,7 +83,7 @@ if __name__ == "__main__":
     uploader = S3Uploader(get_bucket(os.environ["WASABI_KEY"], os.environ["WASABI_SECRET"]))
     crawler = Crawler(os.environ["ENDPOINT"])
 
-    for offset in range(0, 200, 10):
+    for offset in range(0, 300, 10):
         for row in crawler.get(offset):
             vid = VideoInfoExtractor(row)
             logger.info(vid.filename)
