@@ -30,7 +30,7 @@ export default {
       const entry = entries[0];
       if (entry && entry.isIntersecting) {
         let promise = this.infiniteHandler(this.$state);
-        for (let i = 1; i <= 10; ++i) {
+        for (let i = 1; i <= 30; ++i) {
           promise = promise.catch((error) => {
             if (error) {
               setTimeout(async () => {
@@ -47,7 +47,7 @@ export default {
   },
   async asyncData ({ app, params: {offset, limit} }) {
     offset = offset || 0;
-    limit = limit || 10;
+    limit = limit || 30;
 
     const zfetch = createFetchFunc(app);
     return {
@@ -65,7 +65,7 @@ export default {
   methods: {
     async infiniteHandler($state) {
       if (this.load_completed) return;
-      const res = await this.zfetch(this.list.length, 10);
+      const res = await this.zfetch(this.list.length, 30);
       if (res.length === 0) {
         $state.complete();
       } else {
