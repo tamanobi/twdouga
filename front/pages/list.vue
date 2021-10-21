@@ -6,10 +6,12 @@
       <a-breadcrumb-item>App</a-breadcrumb-item> -->
     </a-breadcrumb>
     <div class="container">
-      <figure v-for="req in requests" :key="req.id">
-        <video controls :src="req.video_url" :poster="req.thumbnail_url ? req.thumbnail_url : ''" />
-        <figcaption><a :href="`https://twitter.com/i/status/${req.status}`"><a-icon type="twitter-circle" theme="filled" /></a><a :href="req.video_url"><a-icon type="zoom-in" /></a></figcaption>
-      </figure>
+      <div class="box" v-for="req in requests" :key="req.id">
+        <figure>
+          <video controls :src="req.video_url" :poster="req.thumbnail_url ? req.thumbnail_url : ''" />
+          <figcaption><a :href="`https://twitter.com/i/status/${req.status}`"><a-icon type="twitter-circle" theme="filled" /></a><a :href="req.video_url"><a-icon type="zoom-in" /></a></figcaption>
+        </figure>
+      </div>
 
       <div v-if="!load_completed" ref="scroll_trigger" style="display: flex;justify-content: center;width: 100%;margin: 32px 0;">
         <a-icon type="loading" style="font-size: 64px;" />
@@ -103,20 +105,27 @@ export default {
   padding: 0;
   min-height: 280px;
 }
-.container > figure {
+.container > .box {
+  padding: 0;
   position: relative;
   flex-grow:1;
   display: flex;
   flex-direction: column;
   margin: 2px;
 }
-.container > figure > video {
+.container > .box > figure {
+  margin: 0;
+  padding: 0;
+}
+.container > .box > figure > video {
+  margin: 0;
+  padding: 0;
   height: 250px;
   object-fit: cover;
   max-width: 100%;
   min-width: 100%;
 }
-.container > figure > figcaption {
+.container > .box > figure > figcaption {
   position: absolute;
   right: 5px;
   top: 1px;
